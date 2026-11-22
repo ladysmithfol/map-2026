@@ -33,11 +33,11 @@ ul.vlist{list-style:none;margin:0;padding:0}
 .num{flex:none;width:24px;height:24px;border-radius:50%;background:var(--numred);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;margin-top:1px}
 .vtxt strong{display:block;font-size:14.5px;line-height:1.2}
 .vtxt small{display:block;font-size:12px;color:#444}
-.mapbox{position:relative;border:1.5px solid #B9C4CE;line-height:0}
+.mapbox{position:relative;border:1.5px solid #B9C4CE;line-height:0;container-type:inline-size}
 .mapbox img.map{width:100%;height:auto;display:block}
 .spot{position:absolute;width:34px;height:34px;transform:translate(-50%,-50%);border-radius:50%;border:2px solid transparent;background:transparent;cursor:pointer;padding:0}
 .spot:hover,.spot:focus-visible{border-color:#fff;box-shadow:0 0 0 2px var(--navy),0 0 0 5px rgba(31,58,95,.35);background:rgba(255,255,255,.18);outline:none}
-.spot-added::before{content:'';position:absolute;left:50%;top:50%;width:13px;height:13px;margin:-7.5px 0 0 -7.5px;border-radius:50%;background:var(--blue);border:1.5px solid #fff;box-shadow:0 0 3px rgba(0,0,0,.4)}
+.spot-added::before{content:'';position:absolute;left:50%;top:50%;width:2.75cqw;height:2.75cqw;transform:translate(-50%,-50%);border-radius:50%;background:var(--blue)}
 .spot.pulse{animation:pulse 1s ease-in-out 3}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(200,16,46,.0)}50%{box-shadow:0 0 0 9px rgba(200,16,46,.45);border-color:#fff}}
 .info-block{display:flex;gap:10px;align-items:center;margin-bottom:10px}
