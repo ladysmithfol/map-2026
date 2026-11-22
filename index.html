@@ -117,6 +117,7 @@ ul.vlist{list-style:none;margin:0;padding:0}
 .popup .links a.fb{background:#1877F2}
 .popup .close{position:absolute;top:6px;right:8px;background:none;border:0;font-size:20px;cursor:pointer;color:#666;line-height:1;padding:4px}
 .popup .links button.menubtn{background:var(--green);color:#fff;border:0;font-weight:700;font-size:13px;padding:7px 12px;border-radius:6px;cursor:pointer}
+.popup .links button.findbtn{background:#fff;color:#2c4a12;border:2px solid var(--green);font-weight:700;font-size:13px;padding:5px 12px;border-radius:6px;cursor:pointer}
 .menuoverlay{display:none;position:fixed;inset:0;background:rgba(20,30,20,.55);z-index:60;overflow:auto;padding:18px 10px}
 .menuoverlay.open{display:block}
 .menucard{background:#fff;max-width:560px;margin:0 auto;border-radius:10px;padding:20px 22px;position:relative;box-shadow:0 8px 30px rgba(0,0,0,.35)}
@@ -318,6 +319,19 @@ function showPopup(kind, id, anchorEl){
   if(kind === 'vendor' && DATA.menus && DATA.menus[id]){
     popLinks.innerHTML += '<button class="menubtn" id="viewmenu">View menu</button>';
     document.getElementById('viewmenu').addEventListener('click', () => openMenu(id, d.name));
+  }
+  if(kind === 'vendor'){
+    popLinks.innerHTML += '<button class="findbtn" id="findonmap">Find on map</button>';
+    const fb = document.getElementById('findonmap');
+    const spot = document.querySelector('.spot[data-kind="vendor"][data-id="' + id + '"]');
+    let holdUntil = 0;
+    fb.addEventListener('mouseenter', () => { if(spot) spot.classList.add('match'); });
+    fb.addEventListener('mouseleave', () => { if(spot && Date.now() > holdUntil) spot.classList.remove('match'); });
+    fb.addEventListener('click', () => {
+      holdUntil = Date.now() + 3200;
+      popup.classList.remove('open');
+      if(spot){ spot.scrollIntoView({behavior:'smooth', block:'center'}); spot.classList.add('match'); pulseSpot('vendor', id); setTimeout(() => spot.classList.remove('match'), 3200); }
+    });
   }
   popup.classList.add('open');
   if(window.innerWidth > 900 && anchorEl){
