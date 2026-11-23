@@ -597,7 +597,7 @@ searchInput.addEventListener('input', () => {
   out.forEach(r => {
     const b = document.createElement('button'); b.type = 'button';
     b.innerHTML = esc(r.name) + '<span class="rtype">' + esc(r.sub) + '</span>';
-    b.addEventListener('click', () => pickResult(r));
+    b.addEventListener('click', e => { e.stopPropagation(); pickResult(r); });
     resultsBox.appendChild(b);
   });
   resultsBox.hidden = false;
