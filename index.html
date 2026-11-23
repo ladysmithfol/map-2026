@@ -74,6 +74,15 @@ button.drive:hover{background:#f2f7e8}
 .jackpot{margin-top:8px}
 .jlabel{font-weight:700;font-size:13px;margin-bottom:2px}
 .jackpot iframe{width:100%;height:190px;border:0}
+.jackpot-live{border:2px solid #E0A100;border-radius:8px;background:#fffdf4;padding:12px;margin:0 0 12px;text-align:center}
+.jackpot-live .jlabel{font-weight:700;font-size:14px;text-align:left}
+.jackpot-live iframe{width:100%;height:288px;border:0}
+@media (max-width:900px){.jackpot-live iframe{height:262px}}
+.jackpot-live .jc-top{font-weight:900;font-size:19px;letter-spacing:.02em;color:var(--ink);margin-top:10px}
+.jackpot-live .jc-sub{font-size:13.5px;color:#555;margin:3px 0 10px}
+.jc-btn{display:inline-block;background:var(--green);color:#fff;text-decoration:none;font-weight:700;font-size:15px;padding:9px 20px;border-radius:20px}
+.jc-btn:hover{background:#86a94a}
+.jc-note{font-size:11px;color:#777;margin-top:8px}
 .north-head{color:var(--red);font-weight:700;font-size:14.5px;line-height:1.2}
 .north-sub{color:var(--red);font-size:12.5px;margin-bottom:6px}
 .greenline{height:3px;background:var(--green);margin:6px 0 8px}
@@ -238,6 +247,25 @@ gtag('config', 'G-MQNTSW82SY');
       <div class="itxt"><b>Get the Light Up Map app</b>Install it on your phone — it works offline on Light Up Night, even if the cell network is busy.</div>
       <button type="button" id="installbtn">Install</button>
     </div>
+    <div class="jackpot-live" id="jackpotblock">
+      <div class="jlabel">Current 50/50 jackpot</div>
+      <div id="jp-online"><iframe id="jp-frame" src="https://widget.rafflenexus.com/rn/lfls062026/jackpot.html?key=AKvmgugdEcjrpbdLJakqvwAa0IKAzpqgvgpbqc82Ecd" title="Current 50/50 jackpot" loading="lazy"></iframe></div>
+      <div id="jp-offline" style="display:none">
+        <div class="jc-top">50/50 JACKPOT</div>
+        <div class="jc-sub">Winner takes half — drawn Light Up Night, Nov 26 at 10 PM</div>
+      </div>
+      <a class="jc-btn" href="https://raffle.ladysmithfol.com" target="_blank" rel="noopener">Buy tickets online</a>
+      <div class="jc-note">Jackpot amount updates live when you're online. BC Gaming Licence #174635 · 19+</div>
+    </div>
+    <script>
+    (function(){var f=document.getElementById('jp-frame'),on=document.getElementById('jp-online'),off=document.getElementById('jp-offline'),loaded=false,timer=null;
+    function show(live){on.style.display=live?'':'none';off.style.display=live?'none':'';}
+    function arm(){clearTimeout(timer);if(navigator.onLine){timer=setTimeout(function(){if(!loaded)show(false);},6000);}}
+    if(f){f.addEventListener('load',function(){loaded=true;if(navigator.onLine)show(true);});}
+    window.addEventListener('offline',function(){show(false);});
+    window.addEventListener('online',function(){loaded=false;if(f){var s=f.src;f.src='about:blank';f.src=s;}show(true);arm();});
+    if(!navigator.onLine)show(false);arm();})();
+    </script>
     <div class="installhelp" id="installhelp" role="dialog" aria-modal="true" aria-labelledby="installhelp-title">
       <div class="card">
         <h3 id="installhelp-title">Install the Light Up Map</h3>
@@ -377,7 +405,7 @@ function showPopup(kind, id, anchorEl){
   if(d.maps) links += '<a href="' + esc(d.maps) + '" target="_blank" rel="noopener">Google Maps</a>';
   popLinks.innerHTML = links;
   if(d.legal) popLinks.insertAdjacentHTML('beforeend', '<p class="legal">' + esc(d.legal) + '</p>');
-  document.getElementById('popjackpot').innerHTML = (kind === 'info' && id.indexOf('raffle') === 0) ? '<div class="jackpot"><div class="jlabel">Current 50/50 jackpot</div><iframe src="https://widget.rafflenexus.com/rn/lfls062026/jackpot.html?key=AKvmgugdEcjrpbdLJakqvwAa0IKAzpqgvgpbqc82Ecd" title="Current 50/50 jackpot" loading="lazy"></iframe></div>' : '';
+  document.getElementById('popjackpot').innerHTML = '';
   if(kind === 'vendor' && DATA.menus && DATA.menus[id]){
     popLinks.insertAdjacentHTML('beforeend', '<button class="menubtn" id="viewmenu">View menu</button>');
     document.getElementById('viewmenu').addEventListener('click', () => openMenu(id, d.name));

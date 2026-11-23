@@ -1,4 +1,4 @@
-const CACHE = 'fol-map-v2';
+const CACHE = 'fol-map-v3';
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(['/'])).then(() => self.skipWaiting()));
 });
