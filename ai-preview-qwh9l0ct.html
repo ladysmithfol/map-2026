@@ -512,6 +512,9 @@ function showPopup(kind, id, anchorEl){
     x = Math.max(10, Math.min(x, window.innerWidth - 360));
     if(y + 230 > window.innerHeight) y = r.top - 240;
     popup.style.left = x + 'px'; popup.style.top = Math.max(10,y) + 'px';
+  } else if(window.innerWidth > 900){
+    popup.style.left = Math.max(10, (window.innerWidth - 340)/2) + 'px';
+    popup.style.top = '120px';
   }
 }
 function pulseSpot(kind, id){
