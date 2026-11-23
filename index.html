@@ -348,14 +348,14 @@ function showPopup(kind, id, anchorEl){
   if(d.fb) links += '<a class="fb" href="' + esc(d.fb) + '" target="_blank" rel="noopener">Facebook</a>';
   if(d.maps) links += '<a href="' + esc(d.maps) + '" target="_blank" rel="noopener">Google Maps</a>';
   popLinks.innerHTML = links;
-  if(d.legal) popLinks.innerHTML += '<p class="legal">' + esc(d.legal) + '</p>';
+  if(d.legal) popLinks.insertAdjacentHTML('beforeend', '<p class="legal">' + esc(d.legal) + '</p>');
   document.getElementById('popjackpot').innerHTML = (kind === 'info' && id.indexOf('raffle') === 0) ? '<div class="jackpot"><div class="jlabel">Current 50/50 jackpot</div><iframe src="https://widget.rafflenexus.com/rn/lfls062026/jackpot.html?key=AKvmgugdEcjrpbdLJakqvwAa0IKAzpqgvgpbqc82Ecd" title="Current 50/50 jackpot" loading="lazy"></iframe></div>' : '';
   if(kind === 'vendor' && DATA.menus && DATA.menus[id]){
-    popLinks.innerHTML += '<button class="menubtn" id="viewmenu">View menu</button>';
+    popLinks.insertAdjacentHTML('beforeend', '<button class="menubtn" id="viewmenu">View menu</button>');
     document.getElementById('viewmenu').addEventListener('click', () => openMenu(id, d.name));
   }
   if(kind === 'vendor'){
-    popLinks.innerHTML += '<button class="findbtn" id="findonmap">Find on map</button>';
+    popLinks.insertAdjacentHTML('beforeend', '<button class="findbtn" id="findonmap">Find on map</button>');
     const fb = document.getElementById('findonmap');
     const spot = document.querySelector('.spot[data-kind="vendor"][data-id="' + id + '"]');
     let holdUntil = 0;
