@@ -41,7 +41,8 @@ header.banner h1{font-family:Arial,sans-serif;font-weight:700;color:#fff;font-si
 header.banner a.qr{flex:none;line-height:0}
 header.banner a.qr img{width:74px;height:74px}
 .rule{height:5px;background:var(--orange);margin:0 0 14px}
-.cols{display:grid;grid-template-columns:250px 1fr 262px;gap:14px;align-items:start}
+.cols{display:grid;grid-template-columns:250px minmax(0,1fr) 262px;gap:14px;align-items:start}
+.cols>*{min-width:0}
 .panel{border:1.5px solid var(--darkred);padding:12px 12px 8px;margin-bottom:14px;background:#fff}
 .panel h2{font-size:15px;margin:0 0 4px}
 .drive{display:flex;gap:10px;align-items:center;margin-bottom:12px}
@@ -190,7 +191,7 @@ footer{text-align:center;font-size:12.5px;color:#666;margin-top:6px}
 .installhelp .closebtn{margin-top:12px;background:var(--green);color:#fff;border:0;border-radius:20px;padding:9px 22px;font-weight:700;font-size:15px;cursor:pointer}
 @media (display-mode: standalone){.installbar{display:none}}
 @media (max-width:900px){
-  .cols{grid-template-columns:1fr}
+  .cols{grid-template-columns:minmax(0,1fr)}
   .mapcol{order:-1}
   header.banner img.logo{height:48px}
   header.banner a.qr img{width:58px;height:58px}
