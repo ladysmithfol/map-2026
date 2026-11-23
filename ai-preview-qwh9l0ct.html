@@ -577,6 +577,7 @@ function pickResult(r){
   if(r.target){ flashBlock(r.target); return; }
   const spot = document.querySelector('.spot[data-kind="' + r.kind + '"][data-id="' + r.id + '"]');
   if(spot){ spot.scrollIntoView({behavior:'smooth', block:'center'}); pulseSpot(r.kind, r.id); setTimeout(() => showPopup(r.kind, r.id, spot), 350); }
+  else if(r.kind && r.id){ showPopup(r.kind, r.id, null); }
 }
 searchInput.addEventListener('input', () => {
   const q = searchInput.value.trim().toLowerCase();
