@@ -152,6 +152,18 @@ footer{text-align:center;font-size:12.5px;color:#666;margin-top:6px}
 .sponsor-teaser .st1{display:block;font-weight:700;font-size:17px;letter-spacing:.02em}
 .sponsor-teaser .st2{display:block;font-size:14px;color:#FFD94D;text-decoration:underline;text-underline-offset:3px;margin-top:2px}
 .sponsor-teaser:hover{background:#274b78}
+.installbar{display:flex;flex-direction:column;gap:8px;background:#f2f7e8;border:2px solid var(--green);border-radius:8px;padding:10px 12px;margin:0 0 12px}
+.installbar .itxt{font-size:14.5px;color:var(--ink)}
+.installbar .itxt b{display:block;font-size:15.5px}
+.installbar button{background:var(--green);color:#fff;border:0;border-radius:20px;padding:9px 18px;font-weight:700;font-size:15px;cursor:pointer;align-self:flex-start}
+.installbar button:hover{background:#86a94a}
+.installhelp{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:200;padding:16px}
+.installhelp.open{display:flex}
+.installhelp .card{background:#fff;border-radius:10px;max-width:420px;width:100%;padding:18px 20px;color:var(--ink)}
+.installhelp h3{margin:0 0 8px;font-size:18px}
+.installhelp p{margin:6px 0;font-size:15px;line-height:1.45}
+.installhelp .closebtn{margin-top:12px;background:var(--green);color:#fff;border:0;border-radius:20px;padding:9px 22px;font-weight:700;font-size:15px;cursor:pointer}
+@media (display-mode: standalone){.installbar{display:none}}
 @media (max-width:900px){
   .cols{grid-template-columns:1fr}
   .mapcol{order:-1}
@@ -221,6 +233,17 @@ gtag('config', 'G-MQNTSW82SY');
     </div>
     <div class="panel">
       <ul class="vlist"><li><button class="vrow" data-kind="vendor" data-id="6"><span class="num">6</span><span class="vtxt"><strong>Donairnutz</strong><small>Big O parking lot</small></span></button></li><li><button class="vrow" data-kind="vendor" data-id="7"><span class="num">7</span><span class="vtxt"><strong>Rotary / Save On Foods</strong><small>Kitchener St — Valve Shop</small></span></button></li><li><button class="vrow" data-kind="vendor" data-id="8"><span class="num">8</span><span class="vtxt"><strong>Mash & Dash</strong><small>Library parking lot</small></span></button></li><li><button class="vrow" data-kind="vendor" data-id="9"><span class="num">9</span><span class="vtxt"><strong>Greek n' Go</strong><small>Library parking lot</small></span></button></li><li><button class="vrow" data-kind="vendor" data-id="10"><span class="num">10</span><span class="vtxt"><strong>Grand Fun Foods</strong><small>Shar Kare</small></span></button></li><li><button class="vrow" data-kind="vendor" data-id="11"><span class="num">11</span><span class="vtxt"><strong>Fresh Coast Coffee</strong><small>Buller St</small></span></button></li><li><button class="vrow" data-kind="vendor" data-id="12"><span class="num">12</span><span class="vtxt"><strong>Smitty's Smokin' Pig</strong><small>Buller St</small></span></button></li><li><button class="vrow" data-kind="vendor" data-id="13"><span class="num">13</span><span class="vtxt"><strong>2 Rae's & Jacks Grilled Cheese</strong><small>High St & Temperance</small></span></button></li><li><button class="vrow" data-kind="vendor" data-id="14"><span class="num">14</span><span class="vtxt"><strong>The Grill Deal</strong><small>High St & Temperance</small></span></button></li><li><button class="vrow" data-kind="vendor" data-id="15"><span class="num">15</span><span class="vtxt"><strong>Mizu</strong><small>High St & CIBC</small></span></button></li></ul>
+    </div>
+    <div class="installbar" id="installbar">
+      <div class="itxt"><b>Get the Light Up Map app</b>Install it on your phone — it works offline on Light Up Night, even if the cell network is busy.</div>
+      <button type="button" id="installbtn">Install</button>
+    </div>
+    <div class="installhelp" id="installhelp" role="dialog" aria-modal="true" aria-labelledby="installhelp-title">
+      <div class="card">
+        <h3 id="installhelp-title">Install the Light Up Map</h3>
+        <p id="installhelp-text"></p>
+        <button type="button" class="closebtn" id="installhelp-close">Got it</button>
+      </div>
     </div>
   </div>
   <div class="mapcol">
@@ -492,5 +515,47 @@ document.querySelectorAll('[data-spots]').forEach(el => el.addEventListener('cli
 }));
 </script>
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js').catch(()=>{}));}</script>
+<script>
+(function(){
+  var deferredPrompt = null;
+  var bar = document.getElementById('installbar');
+  var btn = document.getElementById('installbtn');
+  var help = document.getElementById('installhelp');
+  var helpText = document.getElementById('installhelp-text');
+  var ua = navigator.userAgent || '';
+  var isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var isSafari = /Safari/i.test(ua) && !/CriOS|FxiOS|EdgiOS/i.test(ua);
+  var inApp = /FBAN|FBAV|Instagram|Messenger/i.test(ua);
+  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+    bar.style.display = 'none';
+    return;
+  }
+  window.addEventListener('beforeinstallprompt', function(e){
+    e.preventDefault();
+    deferredPrompt = e;
+  });
+  window.addEventListener('appinstalled', function(){
+    bar.style.display = 'none';
+    deferredPrompt = null;
+  });
+  function showHelp(msg){ helpText.innerHTML = msg; help.classList.add('open'); }
+  document.getElementById('installhelp-close').addEventListener('click', function(){ help.classList.remove('open'); });
+  help.addEventListener('click', function(e){ if (e.target === help) help.classList.remove('open'); });
+  btn.addEventListener('click', function(){
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(function(){ deferredPrompt = null; });
+    } else if (inApp) {
+      showHelp('You\'re viewing this inside another app, which can\'t install it. Tap the <b>⋮ menu</b> and choose <b>Open in browser</b> (or “Open in Chrome/Safari”), then tap <b>Install</b> there.');
+    } else if (isIOS && isSafari) {
+      showHelp('On iPhone: tap the <b>Share</b> button (square with an arrow) at the bottom of Safari, scroll down, and tap <b>Add to Home Screen</b>. The Light Up Map icon will appear on your home screen and works offline.');
+    } else if (isIOS) {
+      showHelp('On iPhone, open <b>map.ladysmithfol.com</b> in <b>Safari</b>, tap the <b>Share</b> button (square with an arrow), then tap <b>Add to Home Screen</b>.');
+    } else {
+      showHelp('Tap your browser\'s <b>⋮ menu</b> (top corner) and choose <b>Install app</b> or <b>Add to Home screen</b>. The Light Up Map icon will appear on your home screen and works offline.');
+    }
+  });
+})();
+</script>
 </body>
 </html>
