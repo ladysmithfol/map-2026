@@ -277,12 +277,15 @@ gtag('config', 'G-MQNTSW82SY');
       <div class="jc-note">Jackpot amount updates live when you're online. BC Gaming Licence #174635 · 19+</div>
     </div>
     <script>
-    (function(){var f=document.getElementById('jp-frame'),on=document.getElementById('jp-online'),off=document.getElementById('jp-offline'),loaded=false,timer=null;
+    (function(){var f=document.getElementById('jp-frame'),on=document.getElementById('jp-online'),off=document.getElementById('jp-offline'),loaded=false,timer=null,base=f?f.src:'';
     function show(live){on.style.display=live?'':'none';off.style.display=live?'none':'';}
     function arm(){clearTimeout(timer);if(navigator.onLine){timer=setTimeout(function(){if(!loaded)show(false);},6000);}}
+    function reload(){if(!f||!navigator.onLine)return;loaded=false;f.src=base+(base.indexOf('?')>=0?'&':'?')+'_t='+Date.now();show(true);arm();}
     if(f){f.addEventListener('load',function(){loaded=true;if(navigator.onLine)show(true);});}
     window.addEventListener('offline',function(){show(false);});
-    window.addEventListener('online',function(){loaded=false;if(f){var s=f.src;f.src='about:blank';f.src=s;}show(true);arm();});
+    window.addEventListener('online',function(){reload();});
+    document.addEventListener('visibilitychange',function(){if(document.visibilityState==='visible')reload();});
+    setInterval(function(){if(!document.hidden)reload();},300000);
     if(!navigator.onLine)show(false);arm();})();
     </script>
     <div class="installhelp" id="installhelp" role="dialog" aria-modal="true" aria-labelledby="installhelp-title">
